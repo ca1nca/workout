@@ -1,0 +1,28 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=workout
+      - POSTGRES_PASSWORD=asdfasdf
+      - POSTGRES_DB=workoutdb
+    volumes:
+      - data:/var/lib/postgresql/data
+  app:
+    environment:
+      - POSTGRES_USER=workout
+      - POSTGRES_PASSWORD=asdfasdf
+      - POSTGRES_DB=workoutdb
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3001 -b '0.0.0.0'"
+    ports:
+      - "1234:1234"
+      - "3001:3001" 
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+volumes:
+  data:
