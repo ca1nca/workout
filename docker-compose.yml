@@ -9,7 +9,7 @@ services:
       - POSTGRES_PASSWORD=asdfasdf
       - POSTGRES_DB=workoutdb
     volumes:
-      - data:/var/lib/postgresql/data
+      - ./backup.sql:/docker-entrypoint-initdb.d/init.sql
   app:
     environment:
       - POSTGRES_USER=workout
