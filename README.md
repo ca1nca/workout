@@ -30,3 +30,5 @@ may not be entirely correct. Using Django (which I have professional experience 
 this is not how it works.
 
 - The only feature is to fetch a program, so the data is fixed
+
+- Sensitive ENV information should always be stored in a .env file and never committed to a public repository. For this toy app, to keep things simple, I left the env variables directly in the docker-compose.yml file
