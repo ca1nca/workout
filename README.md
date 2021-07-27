@@ -10,6 +10,8 @@ Docker Desktop must be installed
 ## How to Build
 1. Make sure Docker is installed (along with docker-compose). I prefer just installing Docker Desktop.
 2. Run `docker-compose up` to build all the containers (NOTE: I only tested this with MacOS, so it may vary slightly between systems).
+3. Note, if an error regarding a missing gem (e.g. nokogiri) shows up, please delete the Gemfile.lock and run `docker-compose build --force-rm --no -cache`.
+   For the purposes of this toy app, Gem version conformity is not incredibly important.
 
 ## How to Test
 1. Enter the app service container with `docker-compose exec app sh`
