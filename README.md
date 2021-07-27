@@ -19,12 +19,13 @@ Docker Desktop must be installed
 
 ## How to Use
 1. The base URL is `http://localhost:3001/api/v1/program`
-2. To query for workout programs that contain a certain type of equipment, add the query param `equipment[]=<name of equipment>`. To query a workout
+2. To query for workout programs that contains all the equipment you own (or list), add the query param `equipment[]=<name of equipment>`. To query a workout
    program that uses multiple pieces of equipment, add another `equipment[]=<name of other equipment>` like so:
    ```
    http://localhost:3001/api/v1/program?equipment[]=football&equipment[]=basketball
    ```
 3. To query for workout programs for a certain sport, add the query param `sport=<name of sport>`
+4. To query for workout programs that don't require any equipment, add `equipment[]=` and do not pass in a value
 
 ## Limitations
 - This is a very basic piece of software. There is no authentication and because I have never personally set up a database using Rails, the schema
