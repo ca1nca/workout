@@ -13,19 +13,11 @@ class Program < ApplicationRecord
                .where("equipment_programs.program_id IS NULL")
     end
 
-    # all program IDs with at least one of the list choices
-    eligible_program_ids = Program.joins(:equipment)
-                                  .where("equipment.name IN (?)", equipment_names).pluck("programs.id")
-
-    # use count to determine, of all eligible programs, which programs contain the same amount of equipment
-    # as in the queried list (every program/equipment combination in equipment_programs is unique)
-    matching_program_ids = Program.joins(:equipment)
-                                  .where("programs.id IN (?)", eligible_program_ids)
-                                  .group("programs.id")
-                                  .having("COUNT(programs.id) = ?", equipment_names.length)
-                                  .pluck("programs.id")
-
-    return where(id: matching_program_ids)
+    # return programs that contain only a subset of the equipment passed in
+    ineligible_program_ids = joins(:equipment)
+      .where("equipment.name NOT IN (?)", equipment_names.blank? ? "" : equipment_names)
+      .pluck("programs.id")
+    return where("programs.id NOT IN (?)", ineligible_program_ids.blank? ? "" : ineligible_program_ids)
   end
 
   def self.filter_by_sport(sport_name)

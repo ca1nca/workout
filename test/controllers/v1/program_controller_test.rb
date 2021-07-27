@@ -41,12 +41,15 @@ class API::V1::ProgramControllerTest < ActionDispatch::IntegrationTest
     Program.create(name: "foo", equipment: [@equipment, @equipment_alt], sport: @sport)
     Program.create(name: "bar", equipment: [@equipment], sport: @sport_alt)
     Program.create(name: "baz", equipment: [@equipment, @equipment_alt, @equipment_alt_2], sport: @sport)
+    Program.create(name: "bap", equipment: [], sport: @sport_alt)
 
-    get "/api/v1/program", params: { sport: @sport.name, equipment: [@equipment.name, @equipment_alt.name] }
+    get "/api/v1/program", params: { equipment: [@equipment.name, @equipment_alt.name] }
 
     assert_response(:success)
-    assert(@response.parsed_body.length == 1)
-    assert(@response.parsed_body[0]["name"] == "foo")
+
+    response_body = @response.parsed_body
+    assert(response_body.length == 3)
+    assert(response_body.none? { |result| result["name"] == "baz" })
   end
 
   test "should handle search with multiple equipment and 1 sport" do
@@ -71,7 +74,7 @@ class API::V1::ProgramControllerTest < ActionDispatch::IntegrationTest
     assert(@response.parsed_body[0]["name"] == "foo")
   end
 
-  test "should handle search with empty equipment and sport" do
+  test "should handle search with empty equipment and 1 sport" do
     Program.create(name: "foo", equipment: [], sport: @sport)
     Program.create(name: "bar", equipment: [], sport: @sport_alt)
 
